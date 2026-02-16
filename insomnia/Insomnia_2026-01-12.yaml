@@ -1,0 +1,62 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Villanueva
+meta:
+  id: wrk_87d869b4f22f4bf58a7d7171f5edecfb
+  created: 1768270708712
+  modified: 1768270708712
+  description: ""
+collection:
+  - name: Auth
+    meta:
+      id: fld_38cf0e4aeb5941a098347cd3d6b25824
+      created: 1768270726760
+      modified: 1768270726760
+      sortKey: -1768270726761
+      description: ""
+    children:
+      - url: https://villanueva-api.luispincay.com/api/auth/login
+        name: New Request
+        meta:
+          id: req_66fbab1b25fc456498f5a4d859377898
+          created: 1768270731760
+          modified: 1768272787648
+          isPrivate: false
+          description: ""
+          sortKey: -1768270731760
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "admin@villanueva.edu.ec",
+              "password": "admin123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_61d46587eb49180e34a5ec932f2ec45b8ba10777
+    created: 1768270708715
+    modified: 1768270708715
+environments:
+  name: Base Environment
+  meta:
+    id: env_61d46587eb49180e34a5ec932f2ec45b8ba10777
+    created: 1768270708714
+    modified: 1768270708714
+    isPrivate: false
