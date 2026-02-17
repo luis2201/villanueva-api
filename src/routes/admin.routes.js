@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
+// Rutas para administración de páginas (CRUD)
 const auth = require('../middlewares/auth.middleware');
 const allowRoles = require('../middlewares/role.middleware');
+const pageController = require('../controllers/page.controller');
 
-// Ruta de prueba (solo ADMIN y EDITOR)
-router.get('/me', auth, allowRoles(['ADMIN', 'EDITOR', 'PUBLISHER', 'VIEWER']), (req, res) => {
-  res.json({ user: req.user });
-});
+// lectura (todos autenticados)
+router.get('/', auth, allowRoles(['ADMIN','EDITOR','PUBLISHER','VIEWER']), pageController.list);
+router.get('/:id', auth, allowRoles(['ADMIN','EDITOR','PUBLISHER','VIEWER']), pageController.getById);
 
-router.get('/pages', auth, allowRoles(['ADMIN', 'EDITOR', 'PUBLISHER']), require('../controllers/pages.controller').list);
-router.get('/pages/:id', auth, allowRoles(['ADMIN', 'EDITOR', 'PUBLISHER']), require('../controllers/pages.controller').getById);
-router.post('/pages', auth, allowRoles(['ADMIN', 'EDITOR']), require('../controllers/pages.controller').create);
-router.put('/pages/:id', auth, allowRoles(['ADMIN', 'EDITOR']), require('../controllers/pages.controller').update);
-router.delete('/pages/:id', auth, allowRoles(['ADMIN']), require('../controllers/pages.controller').remove);
+// escritura
+router.post('/', auth, allowRoles(['ADMIN','EDITOR','PUBLISHER']), pageController.create);
+router.put('/:id', auth, allowRoles(['ADMIN','EDITOR']), pageController.update);
+router.delete('/:id', auth, allowRoles(['ADMIN']), pageController.remove);
 
 module.exports = router;
