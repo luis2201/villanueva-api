@@ -8,6 +8,8 @@ const helmet = require('helmet');
 const authRoutes = require('./routes/auth.routes');
 /* Admin */
 const adminRoutes = require('./routes/admin.routes');
+/* Public */
+const publicRoutes = require('./routes/public.routes');
 
 const app = express();
 
@@ -29,5 +31,7 @@ app.get('/health', async (_, res) => {
 app.use('/api/auth', authRoutes);
 /* Rutas Admin */
 app.use('/api/admin', adminRoutes);
-
+/* Rutas Public */
+app.use('/api/public', publicRoutes);
+  
 module.exports = app;

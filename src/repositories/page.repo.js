@@ -61,4 +61,16 @@ const softDelete = async (id, updated_by) => {
   return result.affectedRows;
 };
 
-module.exports = { list, findById, create, update, softDelete };
+// Obtener una página publicada por su slug, si no se encuentra devuelve null
+const findBySlugPublished = async (slug) => {
+  const [rows] = await pool.query(
+    `SELECT id, title, slug, seo_title, seo_description, published_at
+     FROM pages
+     WHERE slug = ? AND status = 'published' AND deleted_at IS NULL
+     LIMIT 1`,
+    [slug]
+  );
+  return rows[0] || null;
+};
+
+module.exports = { list, findById, create, update, softDelete, findBySlugPublished };
