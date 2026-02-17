@@ -1,41 +1,27 @@
-const pool = require('../config/database');
 const jwt = require('jsonwebtoken');
 const { comparePassword } = require('../utils/password');
+const userRepo = require('../repositories/user.repo');
 
 const login = async (email, password) => {
-  const [rows] = await pool.query(
-    'SELECT id, name, email, password_hash, role, status FROM users WHERE email = ? LIMIT 1',
-    [email]
-  );
+  const user = await userRepo.findByEmail(email);
 
-  if (rows.length === 0) {
-    throw new Error('Credenciales inválidas');
-  }
+  if (!user) throw new Error('Credenciales inválidas');
+  if (user.status !== 'active') throw new Error('Usuario inactivo');
 
-  const user = rows[0];
+  const ok = await comparePassword(password, user.password_hash);
+  if (!ok) throw new Error('Credenciales inválidas');
 
-  if (user.status !== 'active') {
-    throw new Error('Usuario inactivo');
-  }
-
-  const validPassword = await comparePassword(password, user.password_hash);
-  if (!validPassword) {
-    throw new Error('Credenciales inválidas');
-  }
-
+  await userRepo.updateLastLogin(user.id);
+  // Generar JWT con id y role del usuario
   const accessToken = jwt.sign(
     { id: user.id, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
   );
 
+  // Devolver datos del usuario (sin password) y el token de acceso
   return {
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    },
+    user: { id: user.id, name: user.name, email: user.email, role: user.role },
     accessToken
   };
 };
