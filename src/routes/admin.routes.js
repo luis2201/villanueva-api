@@ -4,7 +4,7 @@ const router = express.Router();
 // Rutas para administración de páginas (CRUD)
 const auth = require('../middlewares/auth.middleware');
 const allowRoles = require('../middlewares/role.middleware');
-const pageController = require('../controllers/page.controller');
+const pageController = require('../controllers/pages.controller');
 
 // lectura (todos autenticados)
 router.get('/', auth, allowRoles(['ADMIN','EDITOR','PUBLISHER','VIEWER']), pageController.list);
